@@ -1,7 +1,9 @@
+var record_animation = false;
+var name = "image_"
 
 var f = 10;
 var g = 4;
-var h = 9.86;
+var h = 9.85;
 var h_max = 30;
 var h_min = 0;
 
@@ -24,7 +26,7 @@ startAnimating(24);
 
 function draw() {
   
-  var H = canvas.height = window.innerHeight;
+  var H = canvas.height = 500; //window.innerHeight;
 
   ctx.fillStyle = 'rgba(0,0,0, 1)';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -104,7 +106,30 @@ function animate(newtime) {
 
     if (elapsed > fpsInterval) {
         then = now - (elapsed % fpsInterval);
-        draw();  
+        draw();
+        
+        if(record_animation) {
+
+          if (loop === 1) { 
+          let frame_number = frame.toString().padStart(total_frames.toString().length, '0');
+          let filename = name+frame_number+'.png'
+              
+          dataURL = canvas.toDataURL();
+          var element = document.createElement('a');
+          element.setAttribute('href', dataURL);
+          element.setAttribute('download', filename);
+          element.style.display = 'none';
+          document.body.appendChild(element);
+          element.click();
+          document.body.removeChild(element);
+          }
+
+          if (frame + 1 === total_frames) {
+              loop += 1;
+          }
+
+          if (loop === 2) { stop_animation = true }
+      }
     }
 }
 
